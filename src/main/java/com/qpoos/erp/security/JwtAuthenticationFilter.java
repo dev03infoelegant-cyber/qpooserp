@@ -1,5 +1,6 @@
 package com.qpoos.erp.security;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,13 +37,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             String token = authorizationHeader.substring(7);
-            UUID userId = jwtService.validateAndGetUserId(token);
+            Claims claims = jwtService.validateAndGetClaims(token);
+            UUID userId = UUID.fromString(claims.getSubject());
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = userDetailsService.loadUserById(userId);
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
+                AuthenticatedUserPrincipal principal = new AuthenticatedUserPrincipal(
+                        userId,
+                        jwtService.getEmail(claims),
+                        jwtService.getRole(claims),
                         userDetails.getAuthorities()
+                );
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        principal,
+                        null,
+                        principal.authorities()
                 );
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);

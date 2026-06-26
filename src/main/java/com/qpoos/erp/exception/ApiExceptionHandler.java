@@ -1,4 +1,4 @@
-package com.qpoos.erp.controller;
+package com.qpoos.erp.exception;
 
 import com.qpoos.erp.dto.auth.MessageResponse;
 import org.springframework.http.HttpStatus;

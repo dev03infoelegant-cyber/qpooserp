@@ -48,11 +48,22 @@ public class JwtService {
     }
 
     public UUID validateAndGetUserId(String token) {
-        Claims claims = Jwts.parser()
+        return UUID.fromString(validateAndGetClaims(token).getSubject());
+    }
+
+    public Claims validateAndGetClaims(String token) {
+        return Jwts.parser()
                 .verifyWith(signingKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-        return UUID.fromString(claims.getSubject());
+    }
+
+    public String getEmail(Claims claims) {
+        return claims.get("email", String.class);
+    }
+
+    public String getRole(Claims claims) {
+        return claims.get("role", String.class);
     }
 }

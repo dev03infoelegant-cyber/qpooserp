@@ -1,6 +1,5 @@
 package com.qpoos.erp.company;
 
-import com.qpoos.erp.auth.dto.AuthResponse;
 import com.qpoos.erp.auth.dto.MessageResponse;
 import com.qpoos.erp.common.security.SecurityUtils;
 import com.qpoos.erp.company.dto.CompanyAuthResponse;
@@ -12,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +24,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/company")
+@RequestMapping({"/api/company", "/api/v1/companies"})
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
 public class CompanyController {

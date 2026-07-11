@@ -1,10 +1,14 @@
 package com.qpoos.erp.company;
 
-import com.qpoos.erp.dto.company.CompanyRequest;
-import com.qpoos.erp.dto.company.CompanyResponse;
-import com.qpoos.erp.entity.CompanyEntity;
-import com.qpoos.erp.repository.CompanyRepository;
-import com.qpoos.erp.service.CompanyService;
+import com.qpoos.erp.accounting.setup.AccountingBootstrapService;
+import com.qpoos.erp.common.security.JwtService;
+import com.qpoos.erp.company.dto.CompanyRequest;
+import com.qpoos.erp.company.dto.CompanyResponse;
+import com.qpoos.erp.company.dto.CompanySummary;
+import com.qpoos.erp.company.CompanyEntity;
+import com.qpoos.erp.company.CompanyRepository;
+import com.qpoos.erp.company.CompanyService;
+import com.qpoos.erp.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,7 +34,13 @@ class CompanyServiceTest {
 
     @BeforeEach
     void setUp() {
-        companyService = new CompanyService(mockCompanyRepository(), passwordEncoder);
+        companyService = new CompanyService(
+                mockCompanyRepository(),
+                passwordEncoder,
+                mock(JwtService.class),
+                mock(UserRepository.class),
+                mock(AccountingBootstrapService.class)
+        );
     }
 
     @Test
@@ -56,10 +66,10 @@ class CompanyServiceTest {
         saveCompany(ownerId, "Owner Inactive", false);
         saveCompany(otherUserId, "Other Active", true);
 
-        List<CompanyResponse> responses = companyService.list(ownerId);
+        List<CompanySummary> responses = companyService.list(ownerId);
 
         assertThat(responses)
-                .extracting(CompanyResponse::name)
+                .extracting(CompanySummary::name)
                 .containsExactly("Owner Active");
     }
 
@@ -160,6 +170,9 @@ class CompanyServiceTest {
                     .filter(company -> Boolean.TRUE.equals(company.getIsActive()))
                     .toList();
         });
+        when(repository.findAllByIsActiveTrue()).thenAnswer(invocation -> companies.stream()
+                .filter(company -> Boolean.TRUE.equals(company.getIsActive()))
+                .toList());
         when(repository.findByIdAndUserIdAndIsActiveTrue(any(), any())).thenAnswer(invocation -> {
             UUID id = invocation.getArgument(0);
             UUID userId = invocation.getArgument(1);

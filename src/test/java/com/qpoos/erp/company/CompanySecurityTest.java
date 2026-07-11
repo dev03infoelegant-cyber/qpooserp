@@ -1,8 +1,8 @@
 package com.qpoos.erp.company;
 
-import com.qpoos.erp.entity.UserEntity;
-import com.qpoos.erp.repository.UserRepository;
-import com.qpoos.erp.security.JwtService;
+import com.qpoos.erp.user.UserEntity;
+import com.qpoos.erp.user.UserRepository;
+import com.qpoos.erp.common.security.JwtService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -36,7 +36,7 @@ class CompanySecurityTest {
     @Test
     void companyListRejectsMissingToken() throws Exception {
         mockMvc.perform(get("/api/company"))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -48,7 +48,7 @@ class CompanySecurityTest {
                                   "name": "Token Required Private Limited"
                                 }
                                 """))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test

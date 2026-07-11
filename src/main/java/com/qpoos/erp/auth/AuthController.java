@@ -74,8 +74,8 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<MeResponse> me(Authentication authentication) {
-        UUID userId = SecurityUtils.getUserId(authentication);
+    public ResponseEntity<MeResponse> me() {
+        UUID userId = SecurityUtils.getUserId();
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         return ResponseEntity.ok(new MeResponse(

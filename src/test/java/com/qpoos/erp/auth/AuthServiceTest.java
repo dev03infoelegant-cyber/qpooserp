@@ -1,25 +1,24 @@
 package com.qpoos.erp.auth;
 
-import com.qpoos.erp.config.AuthProperties;
-import com.qpoos.erp.dto.auth.AuthResponse;
-import com.qpoos.erp.dto.auth.ForgotPasswordConfirmRequest;
-import com.qpoos.erp.dto.auth.ForgotPasswordRequest;
-import com.qpoos.erp.dto.auth.LoginRequest;
-import com.qpoos.erp.dto.auth.RegisterRequest;
-import com.qpoos.erp.dto.auth.VerifyEmailRequest;
-import com.qpoos.erp.entity.EmailVerificationTokenEntity;
-import com.qpoos.erp.entity.ForgotPasswordTokenEntity;
-import com.qpoos.erp.entity.RefreshTokenEntity;
-import com.qpoos.erp.entity.UserEntity;
-import com.qpoos.erp.repository.EmailVerificationTokenRepository;
-import com.qpoos.erp.repository.ForgotPasswordTokenRepository;
-import com.qpoos.erp.repository.RefreshTokenRepository;
-import com.qpoos.erp.repository.UserRepository;
-import com.qpoos.erp.security.JwtService;
-import com.qpoos.erp.security.RandomTokenService;
-import com.qpoos.erp.security.TokenHashService;
-import com.qpoos.erp.service.AuthService;
-import com.qpoos.erp.service.DevEmailService;
+import com.qpoos.erp.auth.AuthProperties;
+import com.qpoos.erp.auth.dto.AuthResponse;
+import com.qpoos.erp.auth.dto.ForgotPasswordConfirmRequest;
+import com.qpoos.erp.auth.dto.ForgotPasswordRequest;
+import com.qpoos.erp.auth.dto.LoginRequest;
+import com.qpoos.erp.auth.dto.RegisterRequest;
+import com.qpoos.erp.auth.dto.VerifyEmailRequest;
+import com.qpoos.erp.user.UserEntity;
+import com.qpoos.erp.user.UserRepository;
+import com.qpoos.erp.user.token.EmailVerificationToken;
+import com.qpoos.erp.user.token.EmailVerificationTokenRepository;
+import com.qpoos.erp.user.token.ForgotPasswordToken;
+import com.qpoos.erp.user.token.ForgotPasswordTokenRepository;
+import com.qpoos.erp.user.token.RefreshToken;
+import com.qpoos.erp.user.token.RefreshTokenRepository;
+import com.qpoos.erp.common.security.JwtService;
+import com.qpoos.erp.common.security.RandomTokenService;
+import com.qpoos.erp.common.security.TokenHashService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -47,9 +46,9 @@ class AuthServiceTest {
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private final TokenHashService tokenHashService = new TokenHashService();
     private final List<UserEntity> users = new ArrayList<>();
-    private final List<RefreshTokenEntity> refreshTokens = new ArrayList<>();
-    private final List<EmailVerificationTokenEntity> emailTokens = new ArrayList<>();
-    private final List<ForgotPasswordTokenEntity> forgotTokens = new ArrayList<>();
+    private final List<RefreshToken> refreshTokens = new ArrayList<>();
+    private final List<EmailVerificationToken> emailTokens = new ArrayList<>();
+    private final List<ForgotPasswordToken> forgotTokens = new ArrayList<>();
     private AuthService authService;
     private RecordingEmailService emailService;
 
@@ -70,13 +69,16 @@ class AuthServiceTest {
         ForgotPasswordTokenRepository forgotPasswordTokenRepository = mockForgotPasswordTokenRepository();
 
         emailService = new RecordingEmailService();
+        JwtService jwtService = new JwtService(properties, clock);
+        jwtService.init();
+
         authService = new AuthService(
                 userRepository,
                 refreshTokenRepository,
                 emailVerificationTokenRepository,
                 forgotPasswordTokenRepository,
                 passwordEncoder,
-                new JwtService(properties, clock),
+                jwtService,
                 new RandomTokenService(),
                 tokenHashService,
                 emailService,
@@ -187,8 +189,8 @@ class AuthServiceTest {
                     .filter(token -> token.getRevokedAt() == null)
                     .toList();
         });
-        when(repository.save(any(RefreshTokenEntity.class))).thenAnswer(invocation -> {
-            RefreshTokenEntity token = invocation.getArgument(0);
+        when(repository.save(any(RefreshToken.class))).thenAnswer(invocation -> {
+            RefreshToken token = invocation.getArgument(0);
             if (token.getId() == null) {
                 token.setId(UUID.randomUUID());
                 token.setCreatedAt(OffsetDateTime.now(clock));
@@ -198,8 +200,8 @@ class AuthServiceTest {
             return token;
         });
         when(repository.saveAll(any())).thenAnswer(invocation -> {
-            Iterable<RefreshTokenEntity> tokens = invocation.getArgument(0);
-            List<RefreshTokenEntity> saved = new ArrayList<>();
+            Iterable<RefreshToken> tokens = invocation.getArgument(0);
+            List<RefreshToken> saved = new ArrayList<>();
             tokens.forEach(token -> {
                 refreshTokens.removeIf(existing -> existing.getId().equals(token.getId()));
                 refreshTokens.add(token);
@@ -213,8 +215,8 @@ class AuthServiceTest {
     private EmailVerificationTokenRepository mockEmailVerificationTokenRepository() {
         EmailVerificationTokenRepository repository = mock(EmailVerificationTokenRepository.class);
         when(repository.findByTokenHash(any())).thenAnswer(invocation -> findEmailToken(invocation.getArgument(0)));
-        when(repository.save(any(EmailVerificationTokenEntity.class))).thenAnswer(invocation -> {
-            EmailVerificationTokenEntity token = invocation.getArgument(0);
+        when(repository.save(any(EmailVerificationToken.class))).thenAnswer(invocation -> {
+            EmailVerificationToken token = invocation.getArgument(0);
             if (token.getId() == null) {
                 token.setId(UUID.randomUUID());
                 token.setCreatedAt(OffsetDateTime.now(clock));
@@ -229,8 +231,8 @@ class AuthServiceTest {
     private ForgotPasswordTokenRepository mockForgotPasswordTokenRepository() {
         ForgotPasswordTokenRepository repository = mock(ForgotPasswordTokenRepository.class);
         when(repository.findByTokenHash(any())).thenAnswer(invocation -> findForgotToken(invocation.getArgument(0)));
-        when(repository.save(any(ForgotPasswordTokenEntity.class))).thenAnswer(invocation -> {
-            ForgotPasswordTokenEntity token = invocation.getArgument(0);
+        when(repository.save(any(ForgotPasswordToken.class))).thenAnswer(invocation -> {
+            ForgotPasswordToken token = invocation.getArgument(0);
             if (token.getId() == null) {
                 token.setId(UUID.randomUUID());
                 token.setCreatedAt(OffsetDateTime.now(clock));
@@ -246,15 +248,15 @@ class AuthServiceTest {
         return users.stream().filter(user -> user.getEmail().equalsIgnoreCase(email)).findFirst();
     }
 
-    private Optional<RefreshTokenEntity> findRefreshToken(String tokenHash) {
+    private Optional<RefreshToken> findRefreshToken(String tokenHash) {
         return refreshTokens.stream().filter(token -> token.getTokenHash().equals(tokenHash)).findFirst();
     }
 
-    private Optional<EmailVerificationTokenEntity> findEmailToken(String tokenHash) {
+    private Optional<EmailVerificationToken> findEmailToken(String tokenHash) {
         return emailTokens.stream().filter(token -> token.getTokenHash().equals(tokenHash)).findFirst();
     }
 
-    private Optional<ForgotPasswordTokenEntity> findForgotToken(String tokenHash) {
+    private Optional<ForgotPasswordToken> findForgotToken(String tokenHash) {
         return forgotTokens.stream().filter(token -> token.getTokenHash().equals(tokenHash)).findFirst();
     }
 

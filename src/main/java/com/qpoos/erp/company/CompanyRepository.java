@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface CompanyRepository extends JpaRepository<CompanyEntity, UUID> {
+    List<CompanyEntity> findAllByIsActiveTrue();
     List<CompanyEntity> findAllByUserIdAndIsActiveTrueOrderByCreatedAtDesc(UUID userId);
     Optional<CompanyEntity> findByIdAndUserIdAndIsActiveTrue(UUID id, UUID userId);
     boolean existsByUserIdAndNameIgnoreCaseAndIsActiveTrue(UUID userId, String name);

@@ -28,6 +28,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -59,7 +60,7 @@ public class AuthService {
                 .passwordHash(passwordEncoder.encode(request.password()))
                 .role("user")
                 .isActive(true)
-                .emailVerified(true)
+                .emailVerified(false)
                 .build();
         UserEntity savedUser = userRepository.save(user);
         createVerificationToken(savedUser);

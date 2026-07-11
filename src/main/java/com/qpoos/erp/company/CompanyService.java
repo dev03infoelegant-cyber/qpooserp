@@ -1,8 +1,12 @@
 package com.qpoos.erp.company;
 
-import com.qpoos.erp.common.security.SecurityUtils;
+import com.qpoos.erp.accounting.setup.AccountingBootstrapService;
+import com.qpoos.erp.common.security.JwtService;
+import com.qpoos.erp.company.dto.CompanyAuthResponse;
 import com.qpoos.erp.company.dto.CompanyRequest;
 import com.qpoos.erp.company.dto.CompanyResponse;
+import com.qpoos.erp.company.dto.CompanySummary;
+import com.qpoos.erp.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +21,9 @@ public class CompanyService {
 
     private final CompanyRepository companyRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+    private final UserRepository userRepository;
+    private final AccountingBootstrapService accountingBootstrapService;
 
     @Transactional
     public CompanyResponse create(UUID userId, CompanyRequest request) {
@@ -45,12 +52,14 @@ public class CompanyService {
                 .isActive(true)
                 .build();
 
-        return toResponse(companyRepository.save(company));
+        CompanyEntity savedCompany = companyRepository.save(company);
+        accountingBootstrapService.ensureDefaultChartForCompany(savedCompany);
+        return toResponse(savedCompany);
     }
 
-    public List<CompanyResponse> list(UUID userId) {
+    public List<CompanySummary> list(UUID userId) {
         return companyRepository.findAllByUserIdAndIsActiveTrueOrderByCreatedAtDesc(userId).stream()
-                .map(this::toResponse)
+                .map(c -> new CompanySummary(c.getId(), c.getName()))
                 .toList();
     }
 
@@ -90,6 +99,18 @@ public class CompanyService {
         CompanyEntity company = getOwnedActiveCompany(userId, companyId);
         company.setIsActive(false);
         companyRepository.save(company);
+    }
+
+    @Transactional
+    public CompanyAuthResponse switchCompany(UUID companyId, UUID userId){
+        List<CompanySummary> userCompanies = list(userId);
+        CompanySummary company = userCompanies.stream()
+                .filter(c -> c.id().equals(companyId))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Company not found"));
+        var user = userRepository.getById(userId);
+        var token = jwtService.createAccessToken(user, companyId);
+        return CompanyAuthResponse.bearer(token , 900);
     }
 
     private CompanyEntity getOwnedActiveCompany(UUID userId, UUID companyId) {

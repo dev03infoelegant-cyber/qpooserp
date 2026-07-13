@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping({"/api/company", "/api/v1/companies"})
+@RequestMapping("/api/company")
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
 public class CompanyController {

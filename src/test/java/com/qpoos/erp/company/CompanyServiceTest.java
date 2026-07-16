@@ -1,14 +1,17 @@
 package com.qpoos.erp.company;
 
 import com.qpoos.erp.accounting.setup.AccountingBootstrapService;
+import com.qpoos.erp.auth.AuthProperties;
 import com.qpoos.erp.common.security.JwtService;
 import com.qpoos.erp.company.dto.CompanyRequest;
 import com.qpoos.erp.company.dto.CompanyResponse;
 import com.qpoos.erp.company.dto.CompanySummary;
+import com.qpoos.erp.company.dto.CompanyAuthResponse;
 import com.qpoos.erp.company.CompanyEntity;
 import com.qpoos.erp.company.CompanyRepository;
 import com.qpoos.erp.company.CompanyService;
 import com.qpoos.erp.user.UserRepository;
+import com.qpoos.erp.user.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +26,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -31,16 +35,37 @@ class CompanyServiceTest {
     private final List<CompanyEntity> companies = new ArrayList<>();
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private CompanyService companyService;
+    private JwtService jwtService;
+    private UserRepository userRepository;
 
     @BeforeEach
     void setUp() {
+        AuthProperties properties = new AuthProperties();
+        properties.setAccessTokenMinutes(27);
+        jwtService = mock(JwtService.class);
+        userRepository = mock(UserRepository.class);
         companyService = new CompanyService(
                 mockCompanyRepository(),
                 passwordEncoder,
-                mock(JwtService.class),
-                mock(UserRepository.class),
-                mock(AccountingBootstrapService.class)
+                jwtService,
+                userRepository,
+                mock(AccountingBootstrapService.class),
+                properties
         );
+    }
+
+    @Test
+    void switchCompanyUsesConfiguredAccessTokenExpiration() {
+        UUID userId = UUID.randomUUID();
+        CompanyEntity company = saveCompany(userId, "Configured Expiry Company", true);
+        UserEntity user = UserEntity.builder().id(userId).email("user@example.com").build();
+        doReturn(user).when(userRepository).getById(userId);
+        when(jwtService.createAccessToken(user, company.getId())).thenReturn("company-token");
+
+        CompanyAuthResponse response = companyService.switchCompany(company.getId(), userId);
+
+        assertThat(response.accessToken()).isEqualTo("company-token");
+        assertThat(response.expiresInSeconds()).isEqualTo(27 * 60);
     }
 
     @Test

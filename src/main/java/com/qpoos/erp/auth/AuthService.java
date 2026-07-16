@@ -9,6 +9,7 @@ import com.qpoos.erp.auth.dto.VerifyEmailRequest;
 import com.qpoos.erp.common.security.JwtService;
 import com.qpoos.erp.common.security.RandomTokenService;
 import com.qpoos.erp.common.security.TokenHashService;
+import com.qpoos.erp.company.CompanyRepository;
 import com.qpoos.erp.user.UserEntity;
 import com.qpoos.erp.user.UserRepository;
 import com.qpoos.erp.user.token.EmailVerificationToken;
@@ -20,6 +21,7 @@ import com.qpoos.erp.user.token.RefreshTokenRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +39,7 @@ public class AuthService {
     private static final String GENERIC_FORGOT_PASSWORD_MESSAGE = "If the email exists, a password recovery link has been sent.";
 
     private final UserRepository userRepository;
+    private final CompanyRepository companyRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final EmailVerificationTokenRepository emailVerificationTokenRepository;
     private final ForgotPasswordTokenRepository forgotPasswordTokenRepository;
@@ -104,7 +107,12 @@ public class AuthService {
     }
 
     @Transactional
-    public AuthResponse refresh(String rawRefreshToken, String userAgent, String ipAddress) {
+    public AuthResponse refresh(
+            String rawRefreshToken,
+            UUID companyId,
+            String userAgent,
+            String ipAddress
+    ) {
         OffsetDateTime now = now();
         RefreshToken currentToken = refreshTokenRepository
                 .findByTokenHash(tokenHashService.hash(rawRefreshToken))
@@ -113,8 +121,15 @@ public class AuthService {
             throw new BadCredentialsException("Invalid refresh token");
         }
 
+        UserEntity user = currentToken.getUser();
+        if (companyId != null && companyRepository
+                .findByIdAndUserIdAndIsActiveTrue(companyId, user.getId())
+                .isEmpty()) {
+            throw new AccessDeniedException("Company is unavailable or not authorized");
+        }
+
         currentToken.setRevokedAt(now);
-        AuthResponse response = issueTokens(currentToken.getUser(), userAgent, ipAddress);
+        AuthResponse response = issueTokens(user, companyId, userAgent, ipAddress);
         RefreshToken replacement = refreshTokenRepository
                 .findByTokenHash(tokenHashService.hash(response.refreshToken()))
                 .orElseThrow(() -> new IllegalStateException("Replacement refresh token was not saved"));
@@ -185,6 +200,10 @@ public class AuthService {
     }
 
     private AuthResponse issueTokens(UserEntity user, String userAgent, String ipAddress) {
+        return issueTokens(user, null, userAgent, ipAddress);
+    }
+
+    private AuthResponse issueTokens(UserEntity user, UUID companyId, String userAgent, String ipAddress) {
         String refreshToken = randomTokenService.generate();
         refreshTokenRepository.save(RefreshToken.builder()
                 .user(user)
@@ -193,7 +212,10 @@ public class AuthService {
                 .userAgent(userAgent)
                 .ipAddress(ipAddress)
                 .build());
-        return AuthResponse.bearer(jwtService.createAccessToken(user), properties.accessTokenSeconds(), refreshToken);
+        String accessToken = companyId == null
+                ? jwtService.createAccessToken(user)
+                : jwtService.createAccessToken(user, companyId);
+        return AuthResponse.bearer(accessToken, properties.accessTokenSeconds(), refreshToken);
     }
 
     private void revokeAllRefreshTokens(UserEntity user) {

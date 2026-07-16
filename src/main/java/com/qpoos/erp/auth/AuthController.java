@@ -7,6 +7,7 @@ import com.qpoos.erp.auth.dto.LoginRequest;
 import com.qpoos.erp.auth.dto.MeResponse;
 import com.qpoos.erp.auth.dto.MessageResponse;
 import com.qpoos.erp.auth.dto.RegisterRequest;
+import com.qpoos.erp.auth.dto.RefreshAccessTokenRequest;
 import com.qpoos.erp.auth.dto.VerifyEmailRequest;
 import com.qpoos.erp.common.security.SecurityUtils;
 import com.qpoos.erp.user.UserEntity;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,8 +63,17 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<AuthResponse> refresh(HttpServletRequest request) {
-        AuthResponse response = authService.refresh(readRefreshCookie(request), userAgent(request), ipAddress(request));
+    public ResponseEntity<AuthResponse> refresh(
+            @RequestBody(required = false) RefreshAccessTokenRequest refreshRequest,
+            HttpServletRequest request
+    ) {
+        UUID companyId = refreshRequest == null ? null : refreshRequest.companyId();
+        AuthResponse response = authService.refresh(
+                readRefreshCookie(request),
+                companyId,
+                userAgent(request),
+                ipAddress(request)
+        );
         return withRefreshCookie(response);
     }
 
@@ -130,7 +141,7 @@ public class AuthController {
     private String readRefreshCookie(HttpServletRequest request) {
         String token = readRefreshCookieOrNull(request);
         if (token == null || token.isBlank()) {
-            throw new IllegalArgumentException("Refresh token cookie is missing");
+            throw new BadCredentialsException("Refresh token cookie is missing");
         }
         return token;
     }

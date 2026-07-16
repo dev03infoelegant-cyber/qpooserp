@@ -2,6 +2,7 @@ package com.qpoos.erp.common.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.UUID;
 
@@ -42,9 +43,12 @@ public final class SecurityUtils {
         return getPrincipal().role();
     }
 
-    /** May be {@code null} if the user has not selected a company yet. */
     public static UUID getCompanyId() {
-        return getPrincipal().companyId();
+        UUID companyId = getPrincipal().companyId();
+        if (companyId == null) {
+            throw new AccessDeniedException("A company must be selected");
+        }
+        return companyId;
     }
 
 

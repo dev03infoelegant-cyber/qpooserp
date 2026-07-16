@@ -1,6 +1,7 @@
 package com.qpoos.erp.company;
 
 import com.qpoos.erp.accounting.setup.AccountingBootstrapService;
+import com.qpoos.erp.auth.AuthProperties;
 import com.qpoos.erp.common.security.JwtService;
 import com.qpoos.erp.company.dto.CompanyAuthResponse;
 import com.qpoos.erp.company.dto.CompanyRequest;
@@ -24,6 +25,7 @@ public class CompanyService {
     private final JwtService jwtService;
     private final UserRepository userRepository;
     private final AccountingBootstrapService accountingBootstrapService;
+    private final AuthProperties properties;
 
     @Transactional
     public CompanyResponse create(UUID userId, CompanyRequest request) {
@@ -110,7 +112,7 @@ public class CompanyService {
                 .orElseThrow(() -> new RuntimeException("Company not found"));
         var user = userRepository.getById(userId);
         var token = jwtService.createAccessToken(user, companyId);
-        return CompanyAuthResponse.bearer(token , 900);
+        return CompanyAuthResponse.bearer(token, properties.accessTokenSeconds());
     }
 
     private CompanyEntity getOwnedActiveCompany(UUID userId, UUID companyId) {

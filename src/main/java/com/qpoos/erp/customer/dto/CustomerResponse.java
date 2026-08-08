@@ -1,10 +1,10 @@
-package com.qpoos.erp.vendor.dto;
+package com.qpoos.erp.customer.dto;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-public record VendorResponse(
+public record CustomerResponse(
         Long id,
         UUID companyId,
         String companyName,

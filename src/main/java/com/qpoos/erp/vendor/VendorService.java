@@ -132,6 +132,7 @@ public class VendorService {
     private VendorResponse toResponse(VendorEntity vendor) {
         return new VendorResponse(
                 vendor.getId(),
+                vendor.getCompany().getId(),
                 vendor.getCompanyName(),
                 vendor.getDisplayName(),
                 vendor.getGstNo(),

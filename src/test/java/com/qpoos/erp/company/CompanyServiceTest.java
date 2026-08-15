@@ -1,17 +1,17 @@
 package com.qpoos.erp.company;
 
 import com.qpoos.erp.accounting.setup.AccountingBootstrapService;
-import com.qpoos.erp.auth.AuthProperties;
+import com.qpoos.erp.auth.application.AuthProperties;
 import com.qpoos.erp.common.security.JwtService;
 import com.qpoos.erp.company.dto.CompanyRequest;
 import com.qpoos.erp.company.dto.CompanyResponse;
 import com.qpoos.erp.company.dto.CompanySummary;
 import com.qpoos.erp.company.dto.CompanyAuthResponse;
-import com.qpoos.erp.company.CompanyEntity;
-import com.qpoos.erp.company.CompanyRepository;
-import com.qpoos.erp.company.CompanyService;
-import com.qpoos.erp.user.UserRepository;
-import com.qpoos.erp.user.UserEntity;
+import com.qpoos.erp.company.domain.CompanyEntity;
+import com.qpoos.erp.company.infrastructure.CompanyRepository;
+import com.qpoos.erp.company.application.CompanyService;
+import com.qpoos.erp.user.infrastructure.UserRepository;
+import com.qpoos.erp.user.domain.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

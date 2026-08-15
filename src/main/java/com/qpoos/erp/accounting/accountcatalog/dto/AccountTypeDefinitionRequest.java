@@ -1,6 +1,6 @@
 package com.qpoos.erp.accounting.accountcatalog.dto;
 
-import com.qpoos.erp.accounting.LedgerType;
+import com.qpoos.erp.accounting.domain.LedgerType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

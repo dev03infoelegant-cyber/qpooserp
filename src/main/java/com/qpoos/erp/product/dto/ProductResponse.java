@@ -1,6 +1,6 @@
 package com.qpoos.erp.product.dto;
 
-import com.qpoos.erp.product.ProductType;
+import com.qpoos.erp.product.domain.ProductType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

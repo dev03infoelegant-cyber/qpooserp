@@ -1,7 +1,7 @@
 package com.qpoos.erp.common.security;
 
-import com.qpoos.erp.user.UserEntity;
-import com.qpoos.erp.user.UserRepository;
+import com.qpoos.erp.user.domain.UserEntity;
+import com.qpoos.erp.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

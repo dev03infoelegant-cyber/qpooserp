@@ -1,6 +1,7 @@
 package com.qpoos.erp.common.security;
 
-import com.qpoos.erp.auth.AuthProperties;
+import com.qpoos.erp.user.domain.UserEntity;
+import com.qpoos.erp.auth.application.AuthProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -28,7 +29,7 @@ public class JwtService {
         this.signingKey = Keys.hmacShaKeyFor(properties.getJwtSecret().getBytes(StandardCharsets.UTF_8));
     }
 
-    public String createAccessToken(com.qpoos.erp.user.UserEntity user, UUID companyId) {
+    public String createAccessToken(com.qpoos.erp.user.domain.UserEntity user, UUID companyId) {
         Instant now = clock.instant();
         Instant expireAt = now.plusSeconds(properties.accessTokenSeconds());
 
@@ -49,20 +50,21 @@ public class JwtService {
     }
 
     /** Overload for initial login where companyId isn't chosen yet. */
-    public String createAccessToken(com.qpoos.erp.user.UserEntity user) {
+    public String createAccessToken(com.qpoos.erp.user.domain.UserEntity user) {
         return createAccessToken(user, null);
     }
 
     /** Parses and validates the cryptographic signature. Call this once per request. */
     public Claims validateAndGetClaims(String token) {
         return Jwts.parser()
+                .clock(() -> Date.from(clock.instant()))
                 .verifyWith(signingKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
     }
 
-    // ─── Static claim extractors ──────────────────────────────────────────────
+    // Static claim extractors.
 
     public static UUID getUserId(Claims claims) {
         return UUID.fromString(claims.getSubject());

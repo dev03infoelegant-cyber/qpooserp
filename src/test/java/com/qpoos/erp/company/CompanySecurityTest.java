@@ -1,7 +1,7 @@
 package com.qpoos.erp.company;
 
-import com.qpoos.erp.user.UserEntity;
-import com.qpoos.erp.user.UserRepository;
+import com.qpoos.erp.user.domain.UserEntity;
+import com.qpoos.erp.user.infrastructure.UserRepository;
 import com.qpoos.erp.common.security.JwtService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

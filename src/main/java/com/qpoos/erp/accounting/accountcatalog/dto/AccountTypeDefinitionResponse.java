@@ -1,7 +1,7 @@
 package com.qpoos.erp.accounting.accountcatalog.dto;
 
-import com.qpoos.erp.accounting.LedgerType;
-import com.qpoos.erp.accounting.NormalBalance;
+import com.qpoos.erp.accounting.domain.LedgerType;
+import com.qpoos.erp.accounting.domain.NormalBalance;
 
 public record AccountTypeDefinitionResponse(
         Long id,

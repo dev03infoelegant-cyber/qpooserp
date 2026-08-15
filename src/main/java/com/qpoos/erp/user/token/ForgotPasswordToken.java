@@ -1,6 +1,6 @@
 package com.qpoos.erp.user.token;
 
-import com.qpoos.erp.user.UserEntity;
+import com.qpoos.erp.user.domain.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

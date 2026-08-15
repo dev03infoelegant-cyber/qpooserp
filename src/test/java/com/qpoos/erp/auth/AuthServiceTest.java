@@ -1,14 +1,16 @@
 package com.qpoos.erp.auth;
 
-import com.qpoos.erp.auth.AuthProperties;
+import com.qpoos.erp.auth.application.AuthService;
+import com.qpoos.erp.auth.application.DevEmailService;
+import com.qpoos.erp.auth.application.AuthProperties;
 import com.qpoos.erp.auth.dto.AuthResponse;
 import com.qpoos.erp.auth.dto.ForgotPasswordConfirmRequest;
 import com.qpoos.erp.auth.dto.ForgotPasswordRequest;
 import com.qpoos.erp.auth.dto.LoginRequest;
 import com.qpoos.erp.auth.dto.RegisterRequest;
 import com.qpoos.erp.auth.dto.VerifyEmailRequest;
-import com.qpoos.erp.user.UserEntity;
-import com.qpoos.erp.user.UserRepository;
+import com.qpoos.erp.user.domain.UserEntity;
+import com.qpoos.erp.user.infrastructure.UserRepository;
 import com.qpoos.erp.user.token.EmailVerificationToken;
 import com.qpoos.erp.user.token.EmailVerificationTokenRepository;
 import com.qpoos.erp.user.token.ForgotPasswordToken;
@@ -18,8 +20,8 @@ import com.qpoos.erp.user.token.RefreshTokenRepository;
 import com.qpoos.erp.common.security.JwtService;
 import com.qpoos.erp.common.security.RandomTokenService;
 import com.qpoos.erp.common.security.TokenHashService;
-import com.qpoos.erp.company.CompanyEntity;
-import com.qpoos.erp.company.CompanyRepository;
+import com.qpoos.erp.company.domain.CompanyEntity;
+import com.qpoos.erp.company.infrastructure.CompanyRepository;
 import io.jsonwebtoken.Claims;
 
 import org.junit.jupiter.api.BeforeEach;

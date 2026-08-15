@@ -1,8 +1,10 @@
 package com.qpoos.erp.company;
 
+import com.qpoos.erp.company.domain.CompanyEntity;
+import com.qpoos.erp.company.infrastructure.CompanyRepository;
 import com.qpoos.erp.common.security.JwtService;
-import com.qpoos.erp.user.UserEntity;
-import com.qpoos.erp.user.UserRepository;
+import com.qpoos.erp.user.domain.UserEntity;
+import com.qpoos.erp.user.infrastructure.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

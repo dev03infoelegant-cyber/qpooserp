@@ -1,4 +1,4 @@
-package com.qpoos.erp.auth.api;
+package com.qpoos.erp.auth.controller;
 
 import com.qpoos.erp.auth.application.AuthProperties;
 import com.qpoos.erp.auth.application.AuthService;

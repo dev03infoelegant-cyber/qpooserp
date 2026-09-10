@@ -1,6 +1,6 @@
-package com.qpoos.erp.purchase.transactionline.infrastructure;
+package com.qpoos.erp.purchase.transaction.infrastructure;
 
-import com.qpoos.erp.purchase.transactionline.domain.TransactionLineEntity;
+import com.qpoos.erp.purchase.transaction.domain.TransactionLineEntity;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

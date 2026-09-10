@@ -1,7 +1,7 @@
 package com.qpoos.erp.common.security;
 
 import com.qpoos.erp.user.domain.UserEntity;
-import com.qpoos.erp.auth.application.AuthProperties;
+import com.qpoos.erp.auth.config.AuthProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

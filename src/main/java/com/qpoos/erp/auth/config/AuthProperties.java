@@ -1,4 +1,4 @@
-package com.qpoos.erp.auth.application;
+package com.qpoos.erp.auth.config;
 
 import lombok.Getter;
 import lombok.Setter;

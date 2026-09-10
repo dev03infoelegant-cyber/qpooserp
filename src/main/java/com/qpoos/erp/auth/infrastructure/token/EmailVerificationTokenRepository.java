@@ -1,4 +1,4 @@
-package com.qpoos.erp.user.token;
+package com.qpoos.erp.auth.infrastructure.token;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,7 +1,7 @@
 package com.qpoos.erp.company;
 
 import com.qpoos.erp.accounting.setup.AccountingBootstrapService;
-import com.qpoos.erp.auth.application.AuthProperties;
+import com.qpoos.erp.auth.config.AuthProperties;
 import com.qpoos.erp.common.security.JwtService;
 import com.qpoos.erp.company.dto.CompanyRequest;
 import com.qpoos.erp.company.dto.CompanyResponse;

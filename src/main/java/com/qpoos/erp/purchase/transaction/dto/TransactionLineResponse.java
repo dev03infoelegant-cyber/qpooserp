@@ -1,6 +1,6 @@
 package com.qpoos.erp.purchase.transaction.dto;
 
-import com.qpoos.erp.purchase.transactionline.domain.TransactionLineType;
+import com.qpoos.erp.purchase.transaction.domain.TransactionLineType;
 
 import java.math.BigDecimal;
 

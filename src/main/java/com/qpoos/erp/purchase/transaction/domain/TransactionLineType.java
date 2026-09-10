@@ -1,4 +1,4 @@
-package com.qpoos.erp.purchase.transactionline.domain;
+package com.qpoos.erp.purchase.transaction.domain;
 
 public enum TransactionLineType {
     ITEM,

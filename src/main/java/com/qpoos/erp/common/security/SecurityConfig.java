@@ -1,6 +1,6 @@
 package com.qpoos.erp.common.security;
 
-import com.qpoos.erp.auth.application.AuthProperties;
+import com.qpoos.erp.auth.config.AuthProperties;
 import com.qpoos.erp.common.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

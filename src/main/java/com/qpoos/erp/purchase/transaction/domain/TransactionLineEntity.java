@@ -1,4 +1,4 @@
-package com.qpoos.erp.purchase.transactionline.domain;
+package com.qpoos.erp.purchase.transaction.domain;
 
 import com.qpoos.erp.accounting.ledger.domain.LedgerEntity;
 import com.qpoos.erp.product.domain.ProductEntity;

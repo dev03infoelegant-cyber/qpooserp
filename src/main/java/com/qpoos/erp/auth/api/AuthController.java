@@ -1,6 +1,6 @@
-package com.qpoos.erp.auth.controller;
+package com.qpoos.erp.auth.api;
 
-import com.qpoos.erp.auth.application.AuthProperties;
+import com.qpoos.erp.auth.config.AuthProperties;
 import com.qpoos.erp.auth.application.AuthService;
 import com.qpoos.erp.auth.dto.AuthResponse;
 import com.qpoos.erp.auth.dto.ForgotPasswordConfirmRequest;

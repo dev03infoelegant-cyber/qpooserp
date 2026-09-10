@@ -1,4 +1,4 @@
-package com.qpoos.erp.user.token;
+package com.qpoos.erp.auth.infrastructure.token;
 
 import com.qpoos.erp.user.domain.UserEntity;
 import jakarta.persistence.*;
@@ -8,13 +8,13 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "forgot_password_tokens")
+@Table(name = "email_verification_tokens")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ForgotPasswordToken {
+public class EmailVerificationToken {
 
     @Id
     @GeneratedValue
@@ -33,12 +33,6 @@ public class ForgotPasswordToken {
 
     @Column(name = "used_at")
     private OffsetDateTime usedAt;
-
-    @Column(name = "ip_address", length = 64)
-    private String ipAddress;
-
-    @Column(name = "user_agent", length = 512)
-    private String userAgent;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;

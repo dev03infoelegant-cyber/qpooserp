@@ -12,7 +12,6 @@ import java.util.UUID;
 public record TransactionResponse(
         Long id,
         UUID companyId,
-        String transactionNo,
         LocalDate transactionDate,
         TransactionType transactionType,
         String billNo,

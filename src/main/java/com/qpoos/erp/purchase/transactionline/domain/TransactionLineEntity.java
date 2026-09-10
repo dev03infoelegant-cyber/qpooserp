@@ -82,10 +82,6 @@ public class TransactionLineEntity {
     private BigDecimal discount = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(name = "taxable", nullable = false)
-    private Boolean taxable = false;
-
-    @Builder.Default
     @Column(name = "tax_rate", nullable = false, precision = 5, scale = 2)
     private BigDecimal taxRate = BigDecimal.ZERO;
 

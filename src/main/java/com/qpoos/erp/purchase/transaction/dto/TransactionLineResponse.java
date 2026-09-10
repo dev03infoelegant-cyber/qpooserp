@@ -15,7 +15,6 @@ public record TransactionLineResponse(
         String unit,
         BigDecimal rate,
         BigDecimal discount,
-        Boolean taxable,
         BigDecimal taxRate,
         BigDecimal taxAmount,
         BigDecimal amount

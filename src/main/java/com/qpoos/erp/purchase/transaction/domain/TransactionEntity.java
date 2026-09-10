@@ -15,7 +15,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,15 +27,7 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(
-        name = "transactions",
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "uk_transaction_company_transaction_no",
-                        columnNames = {"company_id", "transaction_no"}
-                )
-        }
-)
+@Table(name = "transactions")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -51,9 +42,6 @@ public class TransactionEntity {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", nullable = false)
     private CompanyEntity company;
-
-    @Column(name = "transaction_no", nullable = false, length = 50)
-    private String transactionNo;
 
     @Column(name = "transaction_date", nullable = false)
     private LocalDate transactionDate;

@@ -42,8 +42,6 @@ public record TransactionLineRequest(
         @Digits(integer = 17, fraction = 2)
         BigDecimal discount,
 
-        Boolean taxable,
-
         @DecimalMin(value = "0.00")
         @Digits(integer = 3, fraction = 2)
         BigDecimal taxRate,

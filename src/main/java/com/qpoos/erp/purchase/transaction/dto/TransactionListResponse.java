@@ -8,7 +8,6 @@ import java.time.LocalDate;
 
 public record TransactionListResponse(
         Long id,
-        String transactionNo,
         LocalDate transactionDate,
         TransactionType transactionType,
         String billNo,

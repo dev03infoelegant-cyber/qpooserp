@@ -45,11 +45,6 @@ public class TransactionService {
     public TransactionResponse create(TransactionRequest request) {
         UUID companyId = SecurityUtils.getCompanyId();
         UUID userId = SecurityUtils.getUserId();
-        String transactionNo = normalizeTransactionNo(request.transactionNo());
-
-        if (transactionRepository.existsByCompany_IdAndTransactionNoIgnoreCase(companyId, transactionNo)) {
-            throw new IllegalArgumentException("Transaction number already exists");
-        }
 
         validateLines(request.lines());
 
@@ -59,7 +54,7 @@ public class TransactionService {
                 .createdBy(userId)
                 .updatedBy(userId)
                 .build();
-        applyRequest(transaction, request, transactionNo, companyId);
+        applyRequest(transaction, request, companyId);
 
         TransactionEntity saved = transactionRepository.save(transaction);
         saveLines(saved, request.lines(), companyId);
@@ -85,18 +80,9 @@ public class TransactionService {
         UUID companyId = SecurityUtils.getCompanyId();
         UUID userId = SecurityUtils.getUserId();
         TransactionEntity transaction = getTransaction(companyId, transactionId);
-        String transactionNo = normalizeTransactionNo(request.transactionNo());
-
-        if (transactionRepository.existsByCompany_IdAndTransactionNoIgnoreCaseAndIdNot(
-                companyId,
-                transactionNo,
-                transactionId
-        )) {
-            throw new IllegalArgumentException("Transaction number already exists");
-        }
 
         validateLines(request.lines());
-        applyRequest(transaction, request, transactionNo, companyId);
+        applyRequest(transaction, request, companyId);
         transaction.setUpdatedBy(userId);
 
         transactionLineRepository.deleteAllByTransactionId(transactionId);
@@ -120,10 +106,8 @@ public class TransactionService {
     private void applyRequest(
             TransactionEntity transaction,
             TransactionRequest request,
-            String transactionNo,
             UUID companyId
     ) {
-        transaction.setTransactionNo(transactionNo);
         transaction.setTransactionDate(request.transactionDate());
         transaction.setTransactionType(request.transactionType());
         transaction.setBillNo(blankToNull(request.billNo()));
@@ -177,7 +161,6 @@ public class TransactionService {
         line.setUnit(blankToNull(request.unit()));
         line.setRate(amountOrZero(request.rate()));
         line.setDiscount(amountOrZero(request.discount()));
-        line.setTaxable(request.taxable() != null && request.taxable());
         line.setTaxRate(amountOrZero(request.taxRate()));
         line.setTaxAmount(amountOrZero(request.taxAmount()));
         line.setAmount(amountOrZero(request.amount()));
@@ -238,7 +221,6 @@ public class TransactionService {
         return new TransactionResponse(
                 transaction.getId(),
                 transaction.getCompany().getId(),
-                transaction.getTransactionNo(),
                 transaction.getTransactionDate(),
                 transaction.getTransactionType(),
                 transaction.getBillNo(),
@@ -266,7 +248,6 @@ public class TransactionService {
         VendorEntity vendor = transaction.getVendor();
         return new TransactionListResponse(
                 transaction.getId(),
-                transaction.getTransactionNo(),
                 transaction.getTransactionDate(),
                 transaction.getTransactionType(),
                 transaction.getBillNo(),
@@ -290,15 +271,10 @@ public class TransactionService {
                 line.getUnit(),
                 line.getRate(),
                 line.getDiscount(),
-                line.getTaxable(),
                 line.getTaxRate(),
                 line.getTaxAmount(),
                 line.getAmount()
         );
-    }
-
-    private String normalizeTransactionNo(String value) {
-        return value.trim();
     }
 
     private String blankToNull(String value) {

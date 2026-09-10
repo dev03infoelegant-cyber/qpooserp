@@ -34,17 +34,12 @@ public record ProductResponse(
         BigDecimal alertQuantity,
         BigDecimal reorderQuantity,
 
-        // ── inventory account ─────────────────────────────────────────────────
-        UUID inventoryAssetAccountId,
-
         // ── sales ─────────────────────────────────────────────────────────────
         BigDecimal salePrice,
-        UUID incomeAccountId,
         UUID saleTaxId,
 
         // ── purchase ──────────────────────────────────────────────────────────
         BigDecimal purchaseCost,
-        UUID expenseAccountId,
         UUID purchaseTaxId,
 
         // ── audit ─────────────────────────────────────────────────────────────

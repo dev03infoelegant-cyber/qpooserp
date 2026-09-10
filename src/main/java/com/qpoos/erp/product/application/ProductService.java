@@ -1,7 +1,6 @@
 package com.qpoos.erp.product.application;
 
 import com.qpoos.erp.product.domain.ProductEntity;
-import com.qpoos.erp.product.domain.ProductType;
 import com.qpoos.erp.product.infrastructure.ProductRepository;
 import com.qpoos.erp.common.security.SecurityUtils;
 import com.qpoos.erp.company.domain.CompanyEntity;
@@ -33,8 +32,6 @@ public class ProductService {
         validateUniqueName(companyId, name, null);
         validateUniqueSku(companyId, uppercaseOrNull(request.sku()), null);
         validateUniqueBarcode(companyId, blankToNull(request.barcode()), null);
-        validateBusinessRules(request);
-
         ProductEntity product = ProductEntity.builder()
                 .company(company)
                 .active(true)
@@ -67,8 +64,6 @@ public class ProductService {
         validateUniqueName(companyId, name, productId);
         validateUniqueSku(companyId, uppercaseOrNull(request.sku()), productId);
         validateUniqueBarcode(companyId, blankToNull(request.barcode()), productId);
-        validateBusinessRules(request);
-
         applyRequest(product, request, name);
         return toResponse(productRepository.save(product));
     }
@@ -116,12 +111,6 @@ public class ProductService {
         }
     }
 
-    private void validateBusinessRules(ProductRequest request) {
-        if (request.type() == ProductType.INVENTORY && request.inventoryAssetAccountId() == null) {
-            throw new IllegalArgumentException("Inventory asset account is required for INVENTORY type products");
-        }
-    }
-
     private void applyRequest(ProductEntity product, ProductRequest request, String name) {
         product.setName(name);
         product.setDescription(blankToNull(request.description()));
@@ -138,12 +127,9 @@ public class ProductService {
         product.setOpeningValue(request.openingValue());
         product.setAlertQuantity(request.alertQuantity());
         product.setReorderQuantity(request.reorderQuantity());
-        product.setInventoryAssetAccountId(request.inventoryAssetAccountId());
         product.setSalePrice(request.salePrice());
-        product.setIncomeAccountId(request.incomeAccountId());
         product.setSaleTaxId(request.saleTaxId());
         product.setPurchaseCost(request.purchaseCost());
-        product.setExpenseAccountId(request.expenseAccountId());
         product.setPurchaseTaxId(request.purchaseTaxId());
     }
 
@@ -166,12 +152,9 @@ public class ProductService {
                 product.getOpeningValue(),
                 product.getAlertQuantity(),
                 product.getReorderQuantity(),
-                product.getInventoryAssetAccountId(),
                 product.getSalePrice(),
-                product.getIncomeAccountId(),
                 product.getSaleTaxId(),
                 product.getPurchaseCost(),
-                product.getExpenseAccountId(),
                 product.getPurchaseTaxId(),
                 product.getCreatedAt(),
                 product.getUpdatedAt()

@@ -106,18 +106,10 @@ public class ProductEntity {
     @Column(name = "reorder_quantity", precision = 18, scale = 3)
     private BigDecimal reorderQuantity;
 
-    // ── inventory account ────────────────────────────────────────────────────
-
-    @Column(name = "inventory_asset_account_id")
-    private UUID inventoryAssetAccountId;
-
     // ── sales ────────────────────────────────────────────────────────────────
 
     @Column(name = "sale_price", precision = 18, scale = 2)
     private BigDecimal salePrice;
-
-    @Column(name = "income_account_id")
-    private UUID incomeAccountId;
 
     @Column(name = "sale_tax_id")
     private UUID saleTaxId;
@@ -126,9 +118,6 @@ public class ProductEntity {
 
     @Column(name = "purchase_cost", precision = 18, scale = 2)
     private BigDecimal purchaseCost;
-
-    @Column(name = "expense_account_id")
-    private UUID expenseAccountId;
 
     @Column(name = "purchase_tax_id")
     private UUID purchaseTaxId;

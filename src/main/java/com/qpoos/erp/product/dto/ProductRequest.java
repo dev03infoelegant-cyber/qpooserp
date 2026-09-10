@@ -68,17 +68,11 @@ public record ProductRequest(
         @Digits(integer = 15, fraction = 3)
         BigDecimal reorderQuantity,
 
-        // ── inventory account ─────────────────────────────────────────────────
-
-        UUID inventoryAssetAccountId,
-
         // ── sales ─────────────────────────────────────────────────────────────
 
         @DecimalMin(value = "0.00")
         @Digits(integer = 16, fraction = 2)
         BigDecimal salePrice,
-
-        UUID incomeAccountId,
 
         UUID saleTaxId,
 
@@ -87,8 +81,6 @@ public record ProductRequest(
         @DecimalMin(value = "0.00")
         @Digits(integer = 16, fraction = 2)
         BigDecimal purchaseCost,
-
-        UUID expenseAccountId,
 
         UUID purchaseTaxId
 ) {

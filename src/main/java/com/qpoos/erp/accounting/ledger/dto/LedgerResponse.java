@@ -1,7 +1,7 @@
 package com.qpoos.erp.accounting.ledger.dto;
 
-import com.qpoos.erp.accounting.domain.LedgerType;
-import com.qpoos.erp.accounting.domain.NormalBalance;
+import com.qpoos.erp.accounting.entity.LedgerType;
+import com.qpoos.erp.accounting.entity.NormalBalance;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

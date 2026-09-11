@@ -1,13 +1,13 @@
 package com.qpoos.erp.accounting;
 
-import com.qpoos.erp.accounting.domain.NormalBalance;
-import com.qpoos.erp.accounting.accountcatalog.infrastructure.AccountTypeDefinitionRepository;
+import com.qpoos.erp.accounting.entity.NormalBalance;
+import com.qpoos.erp.accounting.accountcatalog.repository.AccountTypeDefinitionRepository;
 import com.qpoos.erp.common.security.JwtService;
-import com.qpoos.erp.company.application.CompanyService;
+import com.qpoos.erp.company.service.CompanyService;
 import com.qpoos.erp.company.dto.CompanyRequest;
 import com.qpoos.erp.company.dto.CompanyResponse;
-import com.qpoos.erp.user.domain.UserEntity;
-import com.qpoos.erp.user.infrastructure.UserRepository;
+import com.qpoos.erp.user.entity.UserEntity;
+import com.qpoos.erp.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

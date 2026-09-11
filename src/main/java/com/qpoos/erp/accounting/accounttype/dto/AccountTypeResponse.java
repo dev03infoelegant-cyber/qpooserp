@@ -1,7 +1,7 @@
 package com.qpoos.erp.accounting.accounttype.dto;
 
-import com.qpoos.erp.accounting.domain.NormalBalance;
-import com.qpoos.erp.accounting.domain.StatementType;
+import com.qpoos.erp.accounting.entity.NormalBalance;
+import com.qpoos.erp.accounting.entity.StatementType;
 
 public record AccountTypeResponse(
         Long id,

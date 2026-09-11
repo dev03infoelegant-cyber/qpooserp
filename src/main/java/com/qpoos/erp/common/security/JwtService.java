@@ -1,6 +1,10 @@
 package com.qpoos.erp.common.security;
 
+<<<<<<< Updated upstream
 import com.qpoos.erp.user.domain.UserEntity;
+=======
+import com.qpoos.erp.user.entity.UserEntity;
+>>>>>>> Stashed changes
 import com.qpoos.erp.auth.config.AuthProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -29,7 +33,7 @@ public class JwtService {
         this.signingKey = Keys.hmacShaKeyFor(properties.getJwtSecret().getBytes(StandardCharsets.UTF_8));
     }
 
-    public String createAccessToken(com.qpoos.erp.user.domain.UserEntity user, UUID companyId) {
+    public String createAccessToken(com.qpoos.erp.user.entity.UserEntity user, UUID companyId) {
         Instant now = clock.instant();
         Instant expireAt = now.plusSeconds(properties.accessTokenSeconds());
 
@@ -50,7 +54,7 @@ public class JwtService {
     }
 
     /** Overload for initial login where companyId isn't chosen yet. */
-    public String createAccessToken(com.qpoos.erp.user.domain.UserEntity user) {
+    public String createAccessToken(com.qpoos.erp.user.entity.UserEntity user) {
         return createAccessToken(user, null);
     }
 

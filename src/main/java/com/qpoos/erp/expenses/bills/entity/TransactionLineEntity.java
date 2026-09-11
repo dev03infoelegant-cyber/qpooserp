@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream:src/main/java/com/qpoos/erp/purchase/transaction/domain/TransactionLineEntity.java
-package com.qpoos.erp.purchase.transaction.domain;
-=======
 package com.qpoos.erp.expenses.bills.entity;
->>>>>>> Stashed changes:src/main/java/com/qpoos/erp/expenses/bills/entity/TransactionLineEntity.java
 
 import com.qpoos.erp.accounting.ledger.entity.LedgerEntity;
 import com.qpoos.erp.inventory.products.entity.ProductEntity;

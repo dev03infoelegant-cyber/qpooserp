@@ -1,10 +1,6 @@
 package com.qpoos.erp.expenses.bills.dto;
 
-<<<<<<< Updated upstream:src/main/java/com/qpoos/erp/purchase/transaction/dto/TransactionLineRequest.java
-import com.qpoos.erp.purchase.transaction.domain.TransactionLineType;
-=======
 import com.qpoos.erp.expenses.bills.entity.TransactionLineType;
->>>>>>> Stashed changes:src/main/java/com/qpoos/erp/expenses/bills/dto/TransactionLineRequest.java
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;

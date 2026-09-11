@@ -10,27 +10,15 @@ import com.qpoos.erp.auth.dto.VerifyEmailRequest;
 import com.qpoos.erp.common.security.JwtService;
 import com.qpoos.erp.common.security.RandomTokenService;
 import com.qpoos.erp.common.security.TokenHashService;
-<<<<<<< Updated upstream:src/main/java/com/qpoos/erp/auth/application/AuthService.java
-import com.qpoos.erp.company.infrastructure.CompanyRepository;
-import com.qpoos.erp.user.domain.UserEntity;
-import com.qpoos.erp.user.infrastructure.UserRepository;
 import com.qpoos.erp.auth.infrastructure.token.EmailVerificationToken;
 import com.qpoos.erp.auth.infrastructure.token.EmailVerificationTokenRepository;
 import com.qpoos.erp.auth.infrastructure.token.ForgotPasswordToken;
 import com.qpoos.erp.auth.infrastructure.token.ForgotPasswordTokenRepository;
 import com.qpoos.erp.auth.infrastructure.token.RefreshToken;
 import com.qpoos.erp.auth.infrastructure.token.RefreshTokenRepository;
-=======
 import com.qpoos.erp.company.repository.CompanyRepository;
 import com.qpoos.erp.user.entity.UserEntity;
 import com.qpoos.erp.user.repository.UserRepository;
-import com.qpoos.erp.auth.repository.token.EmailVerificationToken;
-import com.qpoos.erp.auth.repository.token.EmailVerificationTokenRepository;
-import com.qpoos.erp.auth.repository.token.ForgotPasswordToken;
-import com.qpoos.erp.auth.repository.token.ForgotPasswordTokenRepository;
-import com.qpoos.erp.auth.repository.token.RefreshToken;
-import com.qpoos.erp.auth.repository.token.RefreshTokenRepository;
->>>>>>> Stashed changes:src/main/java/com/qpoos/erp/auth/service/AuthService.java
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;

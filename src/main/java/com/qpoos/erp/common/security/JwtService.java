@@ -1,10 +1,6 @@
 package com.qpoos.erp.common.security;
 
-<<<<<<< Updated upstream
-import com.qpoos.erp.user.domain.UserEntity;
-=======
 import com.qpoos.erp.user.entity.UserEntity;
->>>>>>> Stashed changes
 import com.qpoos.erp.auth.config.AuthProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

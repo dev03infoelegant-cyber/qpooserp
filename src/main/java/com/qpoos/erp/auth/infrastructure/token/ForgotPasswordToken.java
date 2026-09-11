@@ -1,8 +1,4 @@
-<<<<<<<< Updated upstream:src/main/java/com/qpoos/erp/auth/infrastructure/token/ForgotPasswordToken.java
 package com.qpoos.erp.auth.infrastructure.token;
-========
-package com.qpoos.erp.auth.repository.token;
->>>>>>>> Stashed changes:src/main/java/com/qpoos/erp/auth/repository/token/ForgotPasswordToken.java
 
 import com.qpoos.erp.user.entity.UserEntity;
 import jakarta.persistence.*;

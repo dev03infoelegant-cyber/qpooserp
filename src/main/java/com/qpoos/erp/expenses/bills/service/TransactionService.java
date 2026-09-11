@@ -3,24 +3,6 @@ package com.qpoos.erp.expenses.bills.service;
 import com.qpoos.erp.accounting.ledger.entity.LedgerEntity;
 import com.qpoos.erp.accounting.ledger.repository.LedgerRepository;
 import com.qpoos.erp.common.security.SecurityUtils;
-<<<<<<< Updated upstream:src/main/java/com/qpoos/erp/purchase/transaction/application/TransactionService.java
-import com.qpoos.erp.company.domain.CompanyEntity;
-import com.qpoos.erp.product.domain.ProductEntity;
-import com.qpoos.erp.product.infrastructure.ProductRepository;
-import com.qpoos.erp.purchase.transaction.domain.PaymentStatus;
-import com.qpoos.erp.purchase.transaction.domain.TransactionEntity;
-import com.qpoos.erp.purchase.transaction.dto.TransactionLineRequest;
-import com.qpoos.erp.purchase.transaction.dto.TransactionLineResponse;
-import com.qpoos.erp.purchase.transaction.dto.TransactionListResponse;
-import com.qpoos.erp.purchase.transaction.dto.TransactionRequest;
-import com.qpoos.erp.purchase.transaction.dto.TransactionResponse;
-import com.qpoos.erp.purchase.transaction.infrastructure.TransactionRepository;
-import com.qpoos.erp.purchase.transaction.domain.TransactionLineEntity;
-import com.qpoos.erp.purchase.transaction.domain.TransactionLineType;
-import com.qpoos.erp.purchase.transaction.infrastructure.TransactionLineRepository;
-import com.qpoos.erp.vendor.domain.VendorEntity;
-import com.qpoos.erp.vendor.infrastructure.VendorRepository;
-=======
 import com.qpoos.erp.company.entity.CompanyEntity;
 import com.qpoos.erp.inventory.products.entity.ProductEntity;
 import com.qpoos.erp.inventory.products.repository.ProductRepository;
@@ -37,7 +19,6 @@ import com.qpoos.erp.expenses.bills.entity.TransactionLineType;
 import com.qpoos.erp.expenses.bills.repository.TransactionLineRepository;
 import com.qpoos.erp.expenses.vendors.entity.VendorEntity;
 import com.qpoos.erp.expenses.vendors.repository.VendorRepository;
->>>>>>> Stashed changes:src/main/java/com/qpoos/erp/expenses/bills/service/TransactionService.java
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

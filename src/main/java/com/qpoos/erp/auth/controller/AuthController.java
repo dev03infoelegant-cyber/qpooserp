@@ -1,11 +1,7 @@
 package com.qpoos.erp.auth.controller;
 
 import com.qpoos.erp.auth.config.AuthProperties;
-<<<<<<< Updated upstream:src/main/java/com/qpoos/erp/auth/api/AuthController.java
-import com.qpoos.erp.auth.application.AuthService;
-=======
 import com.qpoos.erp.auth.service.AuthService;
->>>>>>> Stashed changes:src/main/java/com/qpoos/erp/auth/controller/AuthController.java
 import com.qpoos.erp.auth.dto.AuthResponse;
 import com.qpoos.erp.auth.dto.ForgotPasswordConfirmRequest;
 import com.qpoos.erp.auth.dto.ForgotPasswordRequest;

@@ -1,8 +1,4 @@
-<<<<<<<< Updated upstream:src/main/java/com/qpoos/erp/auth/infrastructure/token/RefreshTokenRepository.java
 package com.qpoos.erp.auth.infrastructure.token;
-========
-package com.qpoos.erp.auth.repository.token;
->>>>>>>> Stashed changes:src/main/java/com/qpoos/erp/auth/repository/token/RefreshTokenRepository.java
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

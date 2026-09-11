@@ -1,8 +1,4 @@
-<<<<<<<< Updated upstream:src/main/java/com/qpoos/erp/auth/infrastructure/token/ForgotPasswordTokenRepository.java
 package com.qpoos.erp.auth.infrastructure.token;
-========
-package com.qpoos.erp.auth.repository.token;
->>>>>>>> Stashed changes:src/main/java/com/qpoos/erp/auth/repository/token/ForgotPasswordTokenRepository.java
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

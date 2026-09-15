@@ -3459,3 +3459,8 @@ For a reliable accounting ERP:
 
 This design provides a strong foundation for a real-world double-entry
 accounting system rather than a simple debit/credit entry screen.
+
+
+
+
+https://chatgpt.com/share/6aa911a6-391c-83ee-8c14-91022e2a176a
